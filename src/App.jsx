@@ -81,17 +81,15 @@ function App() {
     }
       , 1000)
   }, [count])
-  // useEffect with empty dependency array
-  //should execute one when the component first creates.
+
   useEffect(() => {
-    // call back function
+
     console.warn("Executing without rerender : ", new Date())
   }, [])
 
-  // useEffect without dependency array
-  // Shpuld execute everytimererenders
+
   useEffect(() => {
-    // call back function
+
     console.warn("Executing with rerender: ", new Date())
   }, [])
 
@@ -103,25 +101,19 @@ function App() {
 
   const [basket, setBasket] = useState([])
   const addProduct = (id, quantity) => {
-    // Get the product from the groceries array
     const product = groceries.find((product) => product.id === id);
 
-    // Create a new basket array to avoid mutating the state directly
     const newBasket = [...basket];
 
-    // Find the index of the product in the basket
     const index = newBasket.findIndex((item) => item.id === product.id);
 
-    // If the product is already in the basket, update the quantity
     if (index >= 0) {
       newBasket[index].quantity += quantity;
 
-      // If the quantity is 0 or less, remove the product from the basket
       if (newBasket[index].quantity <= 0) {
         newBasket.splice(index, 1);
       }
 
-      // Update the new basket with the new array
     } else if (quantity > 0) {
       newBasket.push({
         ...product,
@@ -129,7 +121,6 @@ function App() {
       });
     }
 
-    // Update the basket state with the new basket array
     setBasket(newBasket);
   }
   return (
@@ -141,9 +132,7 @@ function App() {
           <div className="objects">
             {groceries.map((product) => (
               <ListItem
-                // consumed by react
                 key={product.id}
-                // consumed by the compoent
                 product={product}
                 onAddProduct={addProduct}
               />

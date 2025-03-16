@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import ListItem from './components/ListItem'
 import Basket from './components/Basket'
+import Header from './components/Header'
 import './App.css'
+import Footer from './components/Footer'
 
 function App() {
   const groceries = [
@@ -21,7 +23,7 @@ function App() {
     },
     {
       id: 3,
-      name: 'eggs',
+      name: 'Eggs',
       description: 'Healthy, Powerful and Important in our system',
       price: 3.99,
       image: 'https://png.pngtree.com/png-vector/20240907/ourmid/pngtree-basket-of-eggs-in-high-resolution-3d-render-png-image_13783450.png',
@@ -57,14 +59,14 @@ function App() {
     {
       id: 8,
       name: 'Eru source',
-      description: 'Delicious',
+      description: 'Delicious meal recipe cheep price',
       price: 1.89,
       image: 'https://letawuik.insight.cg/web/image/product.template/136/image_1024?unique=a4d66a1',
     },
     {
       id: 9,
       name: 'vegetable Salad',
-      description: 'Very good for our system come and have a taste',
+      description: 'Very good for our system  have a taste',
       price: 4.99,
       image: 'https://www.chipotle.com/content/dam/chipotle/menu/meal-types/salad/web-mobile/order.png',
     },
@@ -131,13 +133,10 @@ function App() {
     setBasket(newBasket);
   }
   return (
-
-    <div className="root-container">
-
-      <div>
-
-        <h1></h1>
-        <h4>OUR PRODUCTS</h4>
+    <div >
+      <Header />
+      <div className="root-container">
+        <h1> Quality Food Recipe</h1>
         <div className="all">
           <div className="objects">
             {groceries.map((product) => (
@@ -154,6 +153,7 @@ function App() {
 
         </div>
       </div>
+      <Footer />
     </div>
   )
 }

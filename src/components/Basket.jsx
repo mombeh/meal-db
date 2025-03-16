@@ -2,10 +2,15 @@ import propTypes from "prop-types"
 function Basket ({basket}) {
     return (
         <div className="basket">
+            <h1>Basket</h1>
             {basket.map((item) => (
                 <div className="basket-item" key={item.id}>
-                    <h5>{item.name}</h5>
-                    <p>x{item.quantity}</p>
+                    <div>
+                    <p><strong>Item:</strong> {item.name}</p>
+                    </div>
+                    <div>
+                    <p><strong>Price:</strong> {item.price}</p>
+                    </div>
                 </div>
             ))}
         </div>

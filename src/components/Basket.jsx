@@ -18,7 +18,6 @@ function Basket ({basket}) {
 }
 
 export default Basket
-
 Basket.propTypes= {
     basket: propTypes.object.isRequired,
     onAddproduct: propTypes.func.isRequired

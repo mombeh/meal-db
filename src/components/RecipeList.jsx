@@ -5,12 +5,15 @@ import RecipeDialog from './RecipeDialog';
 import RecipeForm from './RecipeForm';
 
 const RecipeList = () => {
-  const { recipes, searchTerm, setSearchTerm } = useRecipes();
+  const { recipes: allRecipes, searchTerm, setSearchTerm } = useRecipes();
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [formMode, setFormMode] = useState('add'); // 'add' or 'edit'
   const [selectedRecipeForForm, setSelectedRecipeForForm] = useState(null);
+  const [showFavorites, setShowFavorites] = useState(false);
+
+  const recipes = allRecipes.filter(recipe => showFavorites ? recipe.favorite : true);
 
   const handleCardClick = (recipe) => {
     setSelectedRecipe(recipe);
@@ -40,6 +43,20 @@ const RecipeList = () => {
 
   return (
     <div className="p-4">
+      <div className="flex justify-center mb-4">
+        <button
+          onClick={() => setShowFavorites(false)}
+          className={`px-4 py-2 rounded-l-md ${!showFavorites ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
+        >
+          All Recipes
+        </button>
+        <button
+          onClick={() => setShowFavorites(true)}
+          className={`px-4 py-2 rounded-r-md ${showFavorites ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
+        >
+          Favorites
+        </button>
+      </div>
       <div className="flex flex-col md:flex-row gap-4 items-start mb-4">
         <input
           type="text"

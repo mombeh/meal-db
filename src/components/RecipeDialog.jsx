@@ -14,11 +14,11 @@ const RecipeDialog = ({ recipe, onClose, onEdit }) => {
   return (
     <>
       <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={onClose}></div>
-      <div className="fixed right-0 top-0 h-full w-96 bg-white shadow-lg z-50 p-6 overflow-y-auto">
+      <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white shadow-lg z-50 p-6 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <button onClick={onClose} className="absolute top-4 right-4 text-gray-500 hover:text-gray-700">×</button>
         <h2 className="text-2xl font-bold mb-4">{recipe.name}</h2>
         <p className="text-sm text-gray-600 mb-2">{recipe.category} • {recipe.area}</p>
-        <img src={recipe.image} alt={recipe.name} className="w-full h-48 object-cover rounded-md mb-4" />
+        <img src={recipe.image} alt={recipe.name} className="w-full h-32 object-cover rounded-md mb-4" />
         <div className="mb-4">
           <h3 className="text-lg font-semibold mb-2">Ingredients</h3>
           <ul className="list-disc list-inside">
@@ -29,7 +29,11 @@ const RecipeDialog = ({ recipe, onClose, onEdit }) => {
         </div>
         <div className="mb-4">
           <h3 className="text-lg font-semibold mb-2">Instructions</h3>
-          <p>{recipe.instructions}</p>
+          <ol className="list-decimal list-inside space-y-2">
+            {recipe.instructions.split('\r\n').filter(step => step.trim()).map((step, index) => (
+              <li key={index}>{step.trim()}</li>
+            ))}
+          </ol>
         </div>
         <div className="flex items-center mb-4">
           <button

@@ -39,41 +39,51 @@ export const RecipeProvider = ({ children }) => {
 
     const loadRecipes = async () => {
       const storedRecipes = localStorage.getItem('recipes');
+      let recipes = [];
       if (storedRecipes) {
-        setRecipes(JSON.parse(storedRecipes));
-      } else {
-        // Fetch some random meals as sample recipes
-        try {
-          const randomMeals = [];
-          for (let i = 0; i < 3; i++) {
-            const mealRes = await fetch('https://www.themealdb.com/api/json/v1/1/random.php');
-            const mealData = await mealRes.json();
-            if (mealData.meals && mealData.meals[0]) {
-              const meal = mealData.meals[0];
-              const ingredients = [];
-              for (let j = 1; j <= 20; j++) {
-                const ing = meal[`strIngredient${j}`];
-                const measure = meal[`strMeasure${j}`];
-                if (ing && ing.trim()) {
-                  ingredients.push(`${measure} ${ing}`.trim());
-                }
+        recipes = JSON.parse(storedRecipes);
+        setRecipes(recipes);
+      }
+
+      // Always fetch some random meals as sample recipes if not already present
+      try {
+        const randomMeals = [];
+        for (let i = 0; i < 20; i++) {
+          const mealRes = await fetch('https://www.themealdb.com/api/json/v1/1/random.php');
+          const mealData = await mealRes.json();
+          if (mealData.meals && mealData.meals[0]) {
+            const meal = mealData.meals[0];
+            const ingredients = [];
+            for (let j = 1; j <= 20; j++) {
+              const ing = meal[`strIngredient${j}`];
+              const measure = meal[`strMeasure${j}`];
+              if (ing && ing.trim()) {
+                ingredients.push(`${measure} ${ing}`.trim());
               }
-              randomMeals.push({
-                id: meal.idMeal,
-                name: meal.strMeal,
-                image: meal.strMealThumb,
-                category: meal.strCategory,
-                area: meal.strArea,
-                ingredients: ingredients.filter(i => i),
-                instructions: meal.strInstructions,
-                favorite: false
-              });
+            }
+            const apiRecipe = {
+              id: meal.idMeal,
+              name: meal.strMeal,
+              image: meal.strMealThumb,
+              category: meal.strCategory,
+              area: meal.strArea,
+              ingredients: ingredients.filter(i => i),
+              instructions: meal.strInstructions,
+              favorite: false
+            };
+            // Add if not already in recipes
+            if (!recipes.find(r => r.id === apiRecipe.id)) {
+              randomMeals.push(apiRecipe);
             }
           }
-          setRecipes(randomMeals);
-        } catch (error) {
-          console.error('Error fetching meals:', error);
         }
+        if (randomMeals.length > 0) {
+          const updatedRecipes = [...recipes, ...randomMeals];
+          setRecipes(updatedRecipes);
+          localStorage.setItem('recipes', JSON.stringify(updatedRecipes));
+        }
+      } catch (error) {
+        console.error('Error fetching meals:', error);
       }
     };
 

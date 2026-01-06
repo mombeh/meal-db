@@ -72,6 +72,14 @@ const RecipeForm = ({ mode, recipe, onSave, onCancel }) => {
                 className="w-full border border-gray-300 rounded-md px-3 py-2"
                 required
               />
+              {formData.image && (
+                <img
+                  src={formData.image}
+                  alt="Recipe preview"
+                  className="w-32 h-32 object-cover rounded mt-2"
+                  onError={(e) => e.target.style.display = 'none'}
+                />
+              )}
             </div>
             <div className="mb-4">
               <label className="block text-sm font-medium mb-1">Category</label>

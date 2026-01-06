@@ -6,7 +6,7 @@ const RecipeCard = ({ recipe, onClick }) => {
 
   return (
     <div className="bg-white rounded-lg shadow-md p-4 cursor-pointer hover:shadow-lg transition-shadow" onClick={() => onClick(recipe)}>
-      {/* <img src={recipe.image} alt={recipe.name} className="w-full h-48 object-cover rounded-md mb-4" /> */}
+      <img src={recipe.image} alt={recipe.name} className="w-full h-48 object-cover rounded-md mb-4" />
       <h3 className="text-lg font-semibold mb-2">{recipe.name}</h3>
       <p className="text-sm text-gray-600 mb-2">{recipe.category} • {recipe.area}</p>
       <button

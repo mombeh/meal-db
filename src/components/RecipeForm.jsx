@@ -133,7 +133,7 @@ const RecipeForm = ({ mode, recipe, onSave, onCancel }) => {
             </div>
             <div className="flex space-x-2">
               <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
-                Save
+                Add +
               </button>
               <button type="button" onClick={onCancel} className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">
                 Cancel

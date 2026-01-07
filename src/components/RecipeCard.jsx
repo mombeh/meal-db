@@ -5,25 +5,69 @@ const RecipeCard = ({ recipe, onClick }) => {
   const { toggleFavorite } = useRecipes();
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow">
-      <img src={recipe.image} alt={recipe.name} className="w-full h-32 object-cover rounded-md mb-4" />
-      <h3 className="text-lg font-semibold mb-2">{recipe.name}</h3>
-      <p className="text-sm text-gray-600 mb-2">{recipe.category} • {recipe.area}</p>
-      <div className="flex justify-between items-center">
-        <button
-          onClick={() => onClick(recipe)}
-          className="text-blue-500 hover:text-blue-600 underline"
-        >
-          View Details
-        </button>
+    <div
+      onClick={() => onClick(recipe)}
+      className="
+        bg-white rounded-2xl shadow-sm
+        overflow-hidden
+        hover:shadow-xl hover:-translate-y-1
+        transition-all duration-300
+        cursor-pointer
+      "
+    >
+      {/* Image */}
+      <div className="relative">
+        <img
+          src={recipe.image}
+          alt={recipe.name}
+          className="w-full h-40 object-cover"
+        />
+
+        {/* Favorite button */}
         <button
           onClick={(e) => {
             e.stopPropagation();
             toggleFavorite(recipe.id);
           }}
-          className="text-yellow-500 hover:text-yellow-600"
+          className="
+            absolute top-3 right-3
+            bg-white/90 backdrop-blur
+            rounded-full w-9 h-9
+            flex items-center justify-center
+            text-lg
+            shadow-md
+            hover:scale-110 transition
+          "
         >
-          {recipe.favorite ? '★' : '☆'}
+          <span className={recipe.favorite ? 'text-yellow-500' : 'text-gray-400'}>
+            {recipe.favorite ? '★' : '☆'}
+          </span>
+        </button>
+      </div>
+
+      {/* Content */}
+      <div className="p-4">
+        <h3 className="text-lg font-semibold text-gray-800 mb-1 line-clamp-1">
+          {recipe.name}
+        </h3>
+
+        <p className="text-sm text-gray-500 mb-4">
+          {recipe.category} • {recipe.area}
+        </p>
+
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onClick(recipe);
+          }}
+          className="
+            text-sm font-medium
+            text-orange-600
+            hover:text-orange-700
+            underline underline-offset-4
+          "
+        >
+          View Details →
         </button>
       </div>
     </div>

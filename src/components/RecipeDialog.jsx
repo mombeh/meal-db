@@ -1,12 +1,13 @@
 import React from "react";
-import { useRecipes } from "../contexts/RecipeContext";
+import { useDispatch } from "react-redux";
+import { deleteRecipe, toggleFavorite } from "../store/recipesSlice";
 
 const RecipeDialog = ({ recipe, onClose, onEdit }) => {
-  const { deleteRecipe, toggleFavorite } = useRecipes();
+  const dispatch = useDispatch();
 
   const handleDelete = () => {
     if (window.confirm("Are you sure you want to delete this recipe?")) {
-      deleteRecipe(recipe.id);
+      dispatch(deleteRecipe(recipe.id));
       onClose();
     }
   };
@@ -63,7 +64,7 @@ const RecipeDialog = ({ recipe, onClose, onEdit }) => {
             </div>
 
             <button
-              onClick={() => toggleFavorite(recipe.id)}
+              onClick={() => dispatch(toggleFavorite(recipe.id))}
               className="text-3xl"
             >
               <span

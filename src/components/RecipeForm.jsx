@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useRecipes } from "../contexts/RecipeContext";
+import { useSelector, useDispatch } from "react-redux";
+import { addRecipe, updateRecipe } from "../store/recipesSlice";
 
 const RecipeForm = ({ mode, recipe, onSave, onCancel }) => {
-  const { addRecipe, updateRecipe, categories, areas } = useRecipes();
+  const dispatch = useDispatch();
+  const categories = useSelector(state => state.recipes.categories);
+  const areas = useSelector(state => state.recipes.areas);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -42,9 +45,11 @@ const RecipeForm = ({ mode, recipe, onSave, onCancel }) => {
         .filter(Boolean),
     };
 
-    mode === "add"
-      ? addRecipe(newRecipe)
-      : updateRecipe(recipe.id, newRecipe);
+    if (mode === "add") {
+      dispatch(addRecipe(newRecipe));
+    } else {
+      dispatch(updateRecipe({ id: recipe.id, updatedRecipe: newRecipe }));
+    }
 
     onSave();
   };

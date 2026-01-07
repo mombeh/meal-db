@@ -1,11 +1,15 @@
-import React, { useState } from "react";
-import { useRecipes } from "../contexts/RecipeContext";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { selectFilteredRecipes, setSearchTerm, loadInitialData, loadRecipes } from "../store/recipesSlice";
 import RecipeCard from "./RecipeCard";
 import RecipeDialog from "./RecipeDialog";
 import RecipeForm from "./RecipeForm";
 
 const RecipeList = () => {
-  const { recipes: allRecipes, searchTerm, setSearchTerm } = useRecipes();
+  const dispatch = useDispatch();
+  const allRecipes = useSelector(state => state.recipes.recipes);
+  const searchTerm = useSelector(state => state.recipes.searchTerm);
+  const recipesState = useSelector(state => state.recipes);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -13,9 +17,22 @@ const RecipeList = () => {
   const [selectedRecipeForForm, setSelectedRecipeForForm] = useState(null);
   const [showFavorites, setShowFavorites] = useState(false);
 
-  const recipes = allRecipes.filter((recipe) =>
+  const filteredRecipes = allRecipes.filter(recipe =>
+    recipe.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const recipes = filteredRecipes.filter((recipe) =>
     showFavorites ? recipe.favorite : true
   );
+
+  useEffect(() => {
+    if (recipesState.categories.length === 0) {
+      dispatch(loadInitialData());
+    }
+    if (allRecipes.length === 0) {
+      dispatch(loadRecipes());
+    }
+  }, [dispatch, recipesState.categories.length, allRecipes.length]);
 
   const handleCardClick = (recipe) => {
     setSelectedRecipe(recipe);

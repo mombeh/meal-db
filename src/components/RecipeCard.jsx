@@ -1,8 +1,9 @@
 import React from 'react';
-import { useRecipes } from '../contexts/RecipeContext';
+import { useDispatch } from 'react-redux';
+import { toggleFavorite } from '../store/recipesSlice';
 
 const RecipeCard = ({ recipe, onClick }) => {
-  const { toggleFavorite } = useRecipes();
+  const dispatch = useDispatch();
 
   return (
     <div
@@ -27,7 +28,7 @@ const RecipeCard = ({ recipe, onClick }) => {
         <button
           onClick={(e) => {
             e.stopPropagation();
-            toggleFavorite(recipe.id);
+            dispatch(toggleFavorite(recipe.id));
           }}
           className="
             absolute top-3 right-3

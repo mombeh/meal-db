@@ -1,6 +1,8 @@
 import Header from './components/Header';
 import Footer from './components/Footer';
 import RecipeList from './components/RecipeList';
+import MealPlanner from './components/MealPlanner';
+import NutritionDisplay from './components/NutritionDisplay';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './store';
@@ -18,6 +20,14 @@ function App() {
     </h1>
 
     <RecipeList />
+
+    <div className="mt-16">
+      <MealPlanner />
+    </div>
+
+    <div className="mt-16">
+      <NutritionDisplay />
+    </div>
   </main>
 
 

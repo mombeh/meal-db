@@ -1,5 +1,11 @@
 const API_BASE = 'https://www.themealdb.com/api/json/v1/1';
 
+// Edamam API credentials
+const MEAL_PLANNER_APP_ID = import.meta.env.VITE_APP_ID_MEAL_PLANNER;
+const MEAL_PLANNER_APP_KEY = import.meta.env.VITE_APP_KEY_MEAL_PLANNER;
+const NUTRITION_APP_ID = import.meta.env.VITE_APP_ID_NUTRITION;
+const NUTRITION_APP_KEY = import.meta.env.VITE_APP_KEY_NUTRITION;
+
 export const fetchCategories = async () => {
   const res = await fetch(`${API_BASE}/list.php?c=list`);
   const data = await res.json();
@@ -51,4 +57,73 @@ export const fetchRandomMeals = async (count = 20) => {
     }
   }
   return meals;
+};
+
+export const generateMealPlan = async (params = {}) => {
+  const url = `https://api.edamam.com/api/meal-planner/v1/${MEAL_PLANNER_APP_ID}/select?app_key=${MEAL_PLANNER_APP_KEY}`;
+
+  const body = {
+    size: params.size || 7,
+
+    plan: {
+      accept: {
+        all: [
+          ...(params.health?.length ? [{ health: params.health }] : []),
+          ...(params.diet ? [{ diet: [params.diet] }] : [])
+        ]
+      },
+      fit: {
+        ENERC_KCAL: {
+          min: params.minCalories ?? 0,
+          max: params.maxCalories ?? 3000
+        }
+      },
+      sections: {
+        Breakfast: { accept: { all: [] } },
+        Lunch: { accept: { all: [] } },
+        Dinner: { accept: { all: [] } }
+      }
+    }
+  };
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Edamam-Account-User": "demo-user"
+    },
+    body: JSON.stringify(body)
+  });
+
+  if (!response.ok) {
+    const text = await response.text();
+    console.error("Meal Planner Error:", text);
+    throw new Error(`Meal Planner API error: ${response.status}`);
+  }
+
+  return response.json();
+};
+
+
+export const analyzeNutrition = async (ingredients) => {
+  const url = `https://api.edamam.com/api/nutrition-details?app_id=${NUTRITION_APP_ID}&app_key=${NUTRITION_APP_KEY}`;
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      title: "Custom Recipe",
+      ingr: ingredients
+    })
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error(errorText);
+    throw new Error(`Nutrition API error: ${response.status}`);
+  }
+
+  return response.json();
 };

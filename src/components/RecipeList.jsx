@@ -92,8 +92,7 @@ const RecipeList = () => {
           className="
       grid gap-6 mx-auto
       [grid-template-columns:repeat(auto-fit,minmax(240px,1fr))]
-      max-w-7xl
-    "
+      max-w-7xl"
         >
           {recipes.map((recipe) => (
             <RecipeCard

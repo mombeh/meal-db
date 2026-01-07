@@ -118,7 +118,7 @@ const RecipeDialog = ({ recipe, onClose, onEdit }) => {
         <div className="justify-center bg-white">
           <button
             onClick={onEdit}
-            className="w-full py-3 rounded-md bg-gradient-to-r from-orange-500 to-yellow-500 text-white font-semibold shadow hover:scale-[1.02] transition"
+            className="w-full py-3 rounded-md bg-gradient-to-r from-orange-500 to-yellow-500 text-white font-semibold shadow transition"
           >
             Edit Recipe
           </button>

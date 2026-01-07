@@ -55,7 +55,7 @@ const RecipeCard = ({ recipe, onClick }) => {
           {recipe.category} • {recipe.area}
         </p>
 
-        <button
+        <div
           onClick={(e) => {
             e.stopPropagation();
             onClick(recipe);
@@ -64,11 +64,14 @@ const RecipeCard = ({ recipe, onClick }) => {
             text-sm font-medium
             text-orange-600
             hover:text-orange-700
-            underline underline-offset-4
+            bg-orange-50 hover:bg-orange-100
+            px-2 py-1 rounded
+            cursor-pointer
+            inline-block
           "
         >
           View Details →
-        </button>
+        </div>
       </div>
     </div>
   );

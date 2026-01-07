@@ -70,39 +70,61 @@ const RecipeList = () => {
       </div>
 
       {/* Search + Add */}
-      <div className="flex flex-col md:flex-row gap-4 items-center justify-between mb-8">
-        <input
-          type="text"
-          placeholder="Search recipes..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="border border-gray-300 rounded-md px-4 py-2 w-full md:max-w-md"
-        />
+     {/* Search + Add (aligned with grid) */}
+<div className="px-4 sm:px-6 lg:px-8 mb-8">
+  <div className="max-w-7xl mx-auto flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
+    <input
+      type="text"
+      placeholder="Search recipes..."
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+      className="
+        border border-gray-300 rounded-md
+        px-4 py-2
+        w-full
+        sm:max-w-md
+      "
+    />
 
-        <button
-          onClick={handleAddRecipe}
-          className="bg-gradient-to-r from-orange-500 to-yellow-500 text-white px-5 py-2 rounded-md hover:bg-blue-600 transition"
-        >
-          Add Recipe
-        </button>
-      </div>
+    <button
+      onClick={handleAddRecipe}
+      className="
+        bg-gradient-to-r from-orange-500 to-yellow-500
+        text-white px-6 py-2
+        rounded-md
+        w-full sm:w-auto
+        transition
+      "
+    >
+      Add Recipe
+    </button>
+  </div>
+</div>
 
-      <div className="grid justify-center">
-        <div
-          className="
-      grid gap-6 mx-auto
-      [grid-template-columns:repeat(auto-fit,minmax(240px,1fr))]
-      max-w-7xl"
-        >
-          {recipes.map((recipe) => (
-            <RecipeCard
-              key={recipe.id}
-              recipe={recipe}
-              onClick={handleCardClick}
-            />
-          ))}
-        </div>
-      </div>
+
+      {/* Recipe Grid */}
+<div className="px-4 sm:px-6 lg:px-8">
+  <div
+    className="
+      grid gap-6
+      grid-cols-1
+      sm:grid-cols-2
+      md:grid-cols-3
+      lg:grid-cols-4
+      max-w-7xl
+      mx-auto
+    "
+  >
+    {recipes.map((recipe) => (
+      <RecipeCard
+        key={recipe.id}
+        recipe={recipe}
+        onClick={handleCardClick}
+      />
+    ))}
+  </div>
+</div>
+
 
       {/* Dialogs */}
       {isDialogOpen && selectedRecipe && (
@@ -126,3 +148,4 @@ const RecipeList = () => {
 };
 
 export default RecipeList;
+

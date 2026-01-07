@@ -1,145 +1,212 @@
-import React, { useState, useEffect } from 'react';
-import { useRecipes } from '../contexts/RecipeContext';
+import React, { useState, useEffect } from "react";
+import { useRecipes } from "../contexts/RecipeContext";
 
 const RecipeForm = ({ mode, recipe, onSave, onCancel }) => {
   const { addRecipe, updateRecipe, categories, areas } = useRecipes();
+
   const [formData, setFormData] = useState({
-    name: '',
-    image: '',
-    category: '',
-    area: '',
-    ingredients: '',
-    instructions: ''
+    name: "",
+    image: "",
+    category: "",
+    area: "",
+    ingredients: "",
+    instructions: "",
   });
 
   useEffect(() => {
-    if (mode === 'edit' && recipe) {
+    if (mode === "edit" && recipe) {
       setFormData({
         name: recipe.name,
         image: recipe.image,
-        category: recipe.category || '',
-        area: recipe.area || '',
-        ingredients: recipe.ingredients.join(', '),
-        instructions: recipe.instructions
+        category: recipe.category || "",
+        area: recipe.area || "",
+        ingredients: recipe.ingredients.join(", "),
+        instructions: recipe.instructions,
       });
     }
   }, [mode, recipe]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const newRecipe = {
       ...formData,
-      ingredients: formData.ingredients.split(',').map(i => i.trim()).filter(i => i)
+      ingredients: formData.ingredients
+        .split(",")
+        .map((i) => i.trim())
+        .filter(Boolean),
     };
-    if (mode === 'add') {
-      addRecipe(newRecipe);
-    } else {
-      updateRecipe(recipe.id, newRecipe);
-    }
+
+    mode === "add"
+      ? addRecipe(newRecipe)
+      : updateRecipe(recipe.id, newRecipe);
+
     onSave();
   };
 
   return (
     <>
-      <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={onCancel}></div>
-      <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
-        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-          <h2 className="text-2xl font-bold mb-4">{mode === 'add' ? 'Add Recipe' : 'Edit Recipe'}</h2>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label className="block text-sm font-medium mb-1">Name</label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md px-3 py-2"
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium mb-1">Image URL</label>
-              <input
-                type="url"
-                name="image"
-                value={formData.image}
-                onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md px-3 py-2"
-                required
-              />
-              {formData.image && (
-                <img
-                  src={formData.image}
-                  alt="Recipe preview"
-                  className="w-32 h-32 object-cover rounded mt-2"
-                  onError={(e) => e.target.style.display = 'none'}
+      {/* Overlay */}
+      <div
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
+        onClick={onCancel}
+      />
+
+      {/* Modal wrapper */}
+      <div className="fixed inset-0 z-50 flex items-center justify-center px-6">
+        <div className="bg-white w-full max-w-4xl max-h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+
+          {/* Header */}
+          <div className="px-12 py-8 flex items-center justify-between">
+            <h2 className="text-3xl font-bold text-gray-800">
+              {mode === "add" ? "Add Recipe" : "Edit Recipe"}
+            </h2>
+            <button
+              onClick={onCancel}
+              className="text-3xl text-gray-500 hover:text-gray-700"
+            >
+              ×
+            </button>
+          </div>
+
+          {/* Form */}
+          <form
+            onSubmit={handleSubmit}
+            className="flex-1 overflow-y-auto no-scrollbar px-12 pb-20 space-y-14"
+          >
+            {/* SECTION: Basic Info */}
+            <div className="space-y-6">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Recipe Name
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  placeholder="Enter recipe name"
+                  className="w-full px-4 py-3 text-base border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-400 focus:outline-none"
+                  required
                 />
-              )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Image URL
+                </label>
+                <input
+                  type="url"
+                  name="image"
+                  value={formData.image}
+                  onChange={handleChange}
+                  placeholder="https://example.com/image.jpg"
+                  className="w-full px-4 py-3 text-base border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-400 focus:outline-none"
+                  required
+                />
+
+                {formData.image && (
+                  <img
+                    src={formData.image}
+                    alt="Preview"
+                    className="w-full h-72 object-cover rounded-xl mt-6"
+                    onError={(e) => (e.target.style.display = "none")}
+                  />
+                )}
+              </div>
             </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium mb-1">Category</label>
-              <select
-                name="category"
-                value={formData.category}
-                onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md px-3 py-2"
-              >
-                <option value="">Select Category</option>
-                {categories.map(cat => (
-                  <option key={cat.strCategory} value={cat.strCategory}>{cat.strCategory}</option>
-                ))}
-              </select>
+
+            {/* SECTION: Classification */}
+            <div className="space-y-6">
+              <div className="grid grid-cols-2 gap-10">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Category
+                  </label>
+                  <select
+                    name="category"
+                    value={formData.category}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 text-base border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-400 focus:outline-none"
+                  >
+                    <option value="">Select Category</option>
+                    {categories.map((cat) => (
+                      <option key={cat.strCategory} value={cat.strCategory}>
+                        {cat.strCategory}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Area
+                  </label>
+                  <select
+                    name="area"
+                    value={formData.area}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 text-base border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-400 focus:outline-none"
+                  >
+                    <option value="">Select Area</option>
+                    {areas.map((area) => (
+                      <option key={area.strArea} value={area.strArea}>
+                        {area.strArea}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
             </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium mb-1">Area</label>
-              <select
-                name="area"
-                value={formData.area}
-                onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md px-3 py-2"
-              >
-                <option value="">Select Area</option>
-                {areas.map(area => (
-                  <option key={area.strArea} value={area.strArea}>{area.strArea}</option>
-                ))}
-              </select>
-            </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium mb-1">Ingredients (comma separated)</label>
-              <textarea
-                name="ingredients"
-                value={formData.ingredients}
-                onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md px-3 py-2"
-                rows="3"
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium mb-1">Instructions</label>
-              <textarea
-                name="instructions"
-                value={formData.instructions}
-                onChange={handleChange}
-                className="w-full border border-gray-300 rounded-md px-3 py-2"
-                rows="4"
-                required
-              />
-            </div>
-            <div className="flex space-x-2">
-              <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
-                Add +
-              </button>
-              <button type="button" onClick={onCancel} className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">
-                Cancel
-              </button>
+
+            {/* SECTION: Content */}
+            <div className="space-y-8">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Ingredients
+                </label>
+                <textarea
+                  name="ingredients"
+                  value={formData.ingredients}
+                  onChange={handleChange}
+                  rows="4"
+                  placeholder="1 cup sugar, 2 eggs, 1 tsp vanilla"
+                  className="w-full px-4 py-3 text-base border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-400 focus:outline-none"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Instructions
+                </label>
+                <textarea
+                  name="instructions"
+                  value={formData.instructions}
+                  onChange={handleChange}
+                  rows="6"
+                  placeholder="Step 1: ..."
+                  className="w-full px-4 py-3 text-base border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-400 focus:outline-none"
+                  required
+                />
+              </div>
             </div>
           </form>
+
+          {/* Footer */}
+          <div className="px-12 py-6 pb-10 flex justify-center bg-white">
+            <button
+              type="submit"
+              className="w-full max-w-md px-6 py-3 rounded-md bg-gradient-to-r from-orange-500 to-yellow-500 text-white font-semibold shadow hover:scale-[1.02] transition"
+            >
+              {mode === "add" ? "Add Recipe" : "Save Changes"}
+            </button>
+          </div>
         </div>
       </div>
     </>

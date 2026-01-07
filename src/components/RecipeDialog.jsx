@@ -52,7 +52,7 @@ const RecipeDialog = ({ recipe, onClose, onEdit }) => {
         {/* Scrollable content */}
         <div className="flex-1 overflow-y-auto no-scrollbar p-8 pb-36">
           {/* Title + Favorite */}
-          <div className="flex items-start justify-between mb-10 mt-6">
+          <div className="flex items-start justify-between mb-10">
             <div>
               <h2 className="text-3xl font-bold text-gray-800 mb-2">
                 {recipe.name}
@@ -82,9 +82,9 @@ const RecipeDialog = ({ recipe, onClose, onEdit }) => {
               Ingredients
             </h3>
 
-            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-4 gap-x-8 text-sm text-gray-700">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-2 gap-x-8 text-sm text-gray-700">
               {recipe.ingredients.map((ingredient, index) => (
-                <li key={index} className="flex items-center gap-3">
+                <li key={index} className="flex items-center gap-2">
                   <span className="w-2.5 h-2.5 bg-orange-500 rounded-full" />
                   {ingredient}
                 </li>
@@ -98,7 +98,7 @@ const RecipeDialog = ({ recipe, onClose, onEdit }) => {
               Instructions
             </h3>
 
-            <ol className="space-y-4 text-sm text-gray-700 leading-relaxed">
+            <ol className="space-y-2 text-sm text-gray-700 leading-relaxed">
               {recipe.instructions
                 .split("\r\n")
                 .filter((step) => step.trim())
@@ -115,21 +115,10 @@ const RecipeDialog = ({ recipe, onClose, onEdit }) => {
         </div>
 
         {/* Sticky footer */}
-        <div className="sticky bottom-0 bg-white border-t px-8 py-5 flex justify-center rounded-b-2xl">
+        <div className="justify-center bg-white">
           <button
             onClick={onEdit}
-            className="
-        w-full max-w-sm
-        px-6 py-3
-        rounded-full
-        bg-gradient-to-r from-orange-500 to-yellow-500
-        text-white font-semibold
-        shadow-lg
-        hover:scale-[1.02]
-        hover:shadow-xl
-        active:scale-[0.98]
-        transition-all
-      "
+            className="w-full py-3 rounded-md bg-gradient-to-r from-orange-500 to-yellow-500 text-white font-semibold shadow hover:scale-[1.02] transition"
           >
             Edit Recipe
           </button>

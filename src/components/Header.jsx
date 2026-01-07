@@ -39,7 +39,7 @@ function Header() {
 
       {/* Center content */}
       <div className="relative z-10 flex items-center justify-center h-full px-4">
-        <div className="bg-black/55 backdrop-blur-lg rounded-2xl px-10 py-8 text-center max-w-2xl">
+        <div className=" rounded-2xl px-10 py-8 text-center max-w-2xl">
           <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight drop-shadow-lg">
             Discover Delicious Recipes
           </h1>

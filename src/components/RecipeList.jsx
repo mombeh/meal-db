@@ -51,7 +51,7 @@ const RecipeList = () => {
           onClick={() => setShowFavorites(false)}
           className={`px-4 py-2 rounded-l-md ${
             !showFavorites
-              ? "bg-blue-500 text-white"
+              ? "bg-gradient-to-r from-orange-500 to-yellow-500 text-white"
               : "bg-gray-200 text-gray-700"
           }`}
         >
@@ -61,7 +61,7 @@ const RecipeList = () => {
           onClick={() => setShowFavorites(true)}
           className={`px-4 py-2 rounded-r-md ${
             showFavorites
-              ? "bg-blue-500 text-white"
+              ? "bg-gradient-to-r from-orange-500 to-yellow-500 text-white"
               : "bg-gray-200 text-gray-700"
           }`}
         >
@@ -81,7 +81,7 @@ const RecipeList = () => {
 
         <button
           onClick={handleAddRecipe}
-          className="bg-blue-500 text-white px-5 py-2 rounded-md hover:bg-blue-600 transition"
+          className="bg-gradient-to-r from-orange-500 to-yellow-500 text-white px-5 py-2 rounded-md hover:bg-blue-600 transition"
         >
           Add Recipe
         </button>

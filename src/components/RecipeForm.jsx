@@ -77,7 +77,7 @@ const RecipeForm = ({ mode, recipe, onSave, onCancel }) => {
           {/* Form */}
           <form
             onSubmit={handleSubmit}
-            className="flex-1 overflow-y-auto no-scrollbar px-12 pb-20 space-y-14"
+            className="flex-1 overflow-y-auto no-scrollbar px-12 pb-10 space-y-14"
           >
             {/* SECTION: Basic Info */}
             <div className="space-y-6">
@@ -196,17 +196,17 @@ const RecipeForm = ({ mode, recipe, onSave, onCancel }) => {
                 />
               </div>
             </div>
-          </form>
 
-          {/* Footer */}
-          <div className="px-12 py-6 pb-10 flex justify-center bg-white">
-            <button
-              type="submit"
-              className="w-full max-w-md px-6 py-3 rounded-md bg-gradient-to-r from-orange-500 to-yellow-500 text-white font-semibold shadow hover:scale-[1.02] transition"
-            >
-              {mode === "add" ? "Add Recipe" : "Save Changes"}
-            </button>
-          </div>
+            {/* Footer */}
+            <div className="justify-center bg-white">
+              <button
+                type="submit"
+                className="w-full py-3 rounded-md bg-gradient-to-r from-orange-500 to-yellow-500 text-white font-semibold shadow hover:scale-[1.02] transition"
+              >
+                {mode === "add" ? "Add Recipe" : "Save Changes"}
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </>

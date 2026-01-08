@@ -121,9 +121,34 @@ export const analyzeNutrition = async (ingredients) => {
 
   if (!response.ok) {
     const errorText = await response.text();
-    console.error(errorText);
+    console.error('API Error Response:', errorText);
     throw new Error(`Nutrition API error: ${response.status}`);
   }
 
-  return response.json();
+  const data = await response.json();
+
+  // Check if the API returned an error message
+  if (data.message) {
+    throw new Error(`Error analyzing nutrition: ${data.message}`);
+  }
+
+  // Ensure we have the expected structure even if API doesn't provide complete data
+  if (!data.calories) {
+    data.calories = 0; // Default to 0 if not provided
+  }
+  if (!data.totalNutrients) {
+    data.totalNutrients = {}; // Empty object if not provided
+  }
+
+  // If we have cautions, log them but don't fail
+  if (data.cautions && data.cautions.length > 0) {
+    console.warn('API returned cautions:', data.cautions);
+  }
+
+  // If we have data but also cautions, log them for debugging
+  if (data.cautions && data.cautions.length > 0) {
+    console.warn('API returned cautions:', data.cautions);
+  }
+
+  return data;
 };

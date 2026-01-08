@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { selectFilteredRecipes, setSearchTerm, loadInitialData, loadRecipes } from "../store/recipesSlice";
+import {
+  selectFilteredRecipes,
+  setSearchTerm,
+  loadInitialData,
+  loadRecipes,
+} from "../store/recipesSlice";
 import RecipeCard from "./RecipeCard";
 import RecipeDialog from "./RecipeDialog";
 import RecipeForm from "./RecipeForm";
 
 const RecipeList = () => {
   const dispatch = useDispatch();
-  const allRecipes = useSelector(state => state.recipes.recipes);
-  const searchTerm = useSelector(state => state.recipes.searchTerm);
-  const recipesState = useSelector(state => state.recipes);
+  const allRecipes = useSelector((state) => state.recipes.recipes);
+  const searchTerm = useSelector((state) => state.recipes.searchTerm);
+  const recipesState = useSelector((state) => state.recipes);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -17,7 +22,7 @@ const RecipeList = () => {
   const [selectedRecipeForForm, setSelectedRecipeForForm] = useState(null);
   const [showFavorites, setShowFavorites] = useState(false);
 
-  const filteredRecipes = allRecipes.filter(recipe =>
+  const filteredRecipes = allRecipes.filter((recipe) =>
     recipe.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -90,7 +95,7 @@ const RecipeList = () => {
             type="text"
             placeholder="Search recipes..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => dispatch(setSearchTerm(e.target.value))}
             className="border border-gray-300 rounded-md px-4 py-2 w-full sm:max-w-md"
           />
 

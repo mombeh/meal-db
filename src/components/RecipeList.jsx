@@ -26,7 +26,11 @@ const RecipeList = () => {
     recipe.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const recipes = filteredRecipes.filter((recipe) =>
+  const uniqueFilteredRecipes = filteredRecipes.filter((recipe, index, self) =>
+    index === self.findIndex(r => r.id === recipe.id)
+  );
+
+  const recipes = uniqueFilteredRecipes.filter((recipe) =>
     showFavorites ? recipe.favorite : true
   );
 
@@ -119,9 +123,9 @@ const RecipeList = () => {
             </p>
           ) : (
             <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-              {recipes.map((recipe) => (
+              {recipes.map((recipe, index) => (
                 <RecipeCard
-                  key={recipe.id}
+                  key={`${recipe.id}-${index}`}
                   recipe={recipe}
                   onClick={handleCardClick}
                 />

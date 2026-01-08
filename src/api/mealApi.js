@@ -80,9 +80,9 @@ export const generateMealPlan = async (params = {}) => {
       },
     },
     sections: {
-      Breakfast: { dishType: ["Breakfast"] },
-      Lunch: { dishType: ["Lunch"] },
-      Dinner: { dishType: ["Dinner"] },
+      Breakfast: {},
+      Lunch: {},
+      Dinner: {},
     },
   },
 };

@@ -1,5 +1,3 @@
-import { Heart, Home } from "lucide-react";
-
 function Footer() {
   const HomeIcon = () => (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">

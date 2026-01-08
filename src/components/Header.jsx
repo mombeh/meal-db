@@ -22,7 +22,6 @@ function Header() {
 
         <nav className="flex gap-2">
           <NavLink to="/" className={linkStyle}>Home</NavLink>
-          <NavLink to="/nutrition" className={linkStyle}>Nutrition Analysis</NavLink>
           <NavLink to="/meal-planner" className={linkStyle}>Meal Planner</NavLink>
         </nav>
       </div>

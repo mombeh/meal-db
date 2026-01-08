@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { generateMealPlanAsync, clearMealPlan } from '../store/mealPlanSlice';
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { generateMealPlanAsync, clearMealPlan } from "../store/mealPlanSlice";
 
 const MealPlanner = () => {
   const dispatch = useDispatch();
-  const { currentPlan, loading, error } = useSelector((state) => state.mealPlan);
+  const { currentPlan, loading, error } = useSelector(
+    (state) => state.mealPlan
+  );
 
   const [params, setParams] = useState({
-    diet: '',
+    diet: "",
     health: [],
     minCalories: 0,
     maxCalories: 3000,
@@ -58,20 +60,24 @@ const MealPlanner = () => {
       </div>
 
       <div className="mb-4">
-        <label className="block text-sm font-medium mb-2">Health Restrictions</label>
+        <label className="block text-sm font-medium mb-2">
+          Health Restrictions
+        </label>
         <div className="flex flex-wrap gap-2">
-          {['vegan', 'vegetarian', 'gluten-free', 'dairy-free'].map((health) => (
-            <label key={health} className="flex items-center">
-              <input
-                type="checkbox"
-                value={health}
-                checked={params.health.includes(health)}
-                onChange={handleHealthChange}
-                className="mr-2"
-              />
-              {health}
-            </label>
-          ))}
+          {["vegan", "vegetarian", "gluten-free", "dairy-free"].map(
+            (health) => (
+              <label key={health} className="flex items-center">
+                <input
+                  type="checkbox"
+                  value={health}
+                  checked={params.health.includes(health)}
+                  onChange={handleHealthChange}
+                  className="mr-2"
+                />
+                {health}
+              </label>
+            )
+          )}
         </div>
       </div>
 
@@ -97,7 +103,9 @@ const MealPlanner = () => {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-2">Number of Meals</label>
+          <label className="block text-sm font-medium mb-2">
+            Number of Meals
+          </label>
           <input
             type="number"
             name="size"
@@ -114,7 +122,7 @@ const MealPlanner = () => {
           disabled={loading}
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:opacity-50"
         >
-          {loading ? 'Generating...' : 'Generate Meal Plan'}
+          {loading ? "Generating..." : "Generate Meal Plan"}
         </button>
         {currentPlan && (
           <button
@@ -131,22 +139,36 @@ const MealPlanner = () => {
       {currentPlan && (
         <div>
           <h3 className="text-xl font-bold mb-2">Your Meal Plan</h3>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {currentPlan.selection.map((meal, index) => (
-              <div key={index} className="border p-4 rounded">
-                <h4 className="font-semibold">{meal.sections || `Meal ${index + 1}`}</h4>
-                <p>{meal.recipe?.label || 'No recipe'}</p>
-                <p>Calories: {meal.recipe?.calories?.toFixed(0) || 'N/A'}</p>
-                {meal.recipe?.url && (
-                  <a
-                    href={meal.recipe.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-500 underline"
-                  >
-                    View Recipe
-                  </a>
-                )}
+            {currentPlan.selection.map((day, dayIndex) => (
+              <div key={dayIndex} className="border p-4 rounded">
+                <h4 className="font-bold mb-3">Day {dayIndex + 1}</h4>
+
+                {Object.entries(day.sections).map(([mealType, mealData]) => (
+                  <div key={mealType} className="mb-4">
+                    <h5 className="font-semibold text-blue-600">{mealType}</h5>
+
+                    {Array.isArray(mealData.assigned) && mealData.assigned.length > 0 ?(
+                      mealData.assigned.map((item, i) => (
+                        <div key={i} className="ml-2 text-sm">
+                          <p className="font-medium">{item.recipe.label}</p>
+                          <p>Calories: {item.recipe.calories?.toFixed(0)}</p>
+                          <a
+                            href={item.recipe.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-500 underline"
+                          >
+                            View Recipe
+                          </a>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="ml-2 text-sm text-gray-500">No meal assigned.</p>
+                    )}
+                  </div>
+                ))}
               </div>
             ))}
           </div>

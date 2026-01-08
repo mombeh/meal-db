@@ -1,4 +1,4 @@
-const API_BASE = 'https://www.themealdb.com/api/json/v1/1';
+const API_BASE = "https://www.themealdb.com/api/json/v1/1";
 
 // Edamam API credentials
 const MEAL_PLANNER_APP_ID = import.meta.env.VITE_APP_ID_MEAL_PLANNER;
@@ -49,9 +49,9 @@ export const fetchRandomMeals = async (count = 20) => {
         image: meal.strMealThumb,
         category: meal.strCategory,
         area: meal.strArea,
-        ingredients: ingredients.filter(i => i),
+        ingredients: ingredients.filter((i) => i),
         instructions: meal.strInstructions,
-        favorite: false
+        favorite: false,
       };
       meals.push(apiRecipe);
     }
@@ -60,39 +60,40 @@ export const fetchRandomMeals = async (count = 20) => {
 };
 
 export const generateMealPlan = async (params = {}) => {
-  const url = `https://api.edamam.com/api/meal-planner/v1/${MEAL_PLANNER_APP_ID}/select?app_key=${MEAL_PLANNER_APP_KEY}`;
+  const url =
+    `https://api.edamam.com/api/meal-planner/v1/${MEAL_PLANNER_APP_ID}/select` +
+    `?app_id=${MEAL_PLANNER_APP_ID}&app_key=${MEAL_PLANNER_APP_KEY}`;
 
   const body = {
     size: params.size || 7,
-
     plan: {
       accept: {
         all: [
           ...(params.health?.length ? [{ health: params.health }] : []),
-          ...(params.diet ? [{ diet: [params.diet] }] : [])
-        ]
+          ...(params.diet ? [{ diet: [params.diet] }] : []),
+        ],
       },
       fit: {
         ENERC_KCAL: {
           min: params.minCalories ?? 0,
-          max: params.maxCalories ?? 3000
-        }
+          max: params.maxCalories ?? 3000,
+        },
       },
       sections: {
-        Breakfast: { accept: { all: [] } },
-        Lunch: { accept: { all: [] } },
-        Dinner: { accept: { all: [] } }
-      }
-    }
+        Breakfast: {},
+        Lunch: {},
+        Dinner: {},
+      },
+    },
   };
 
   const response = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Edamam-Account-User": "demo-user"
+      "Edamam-Account-User": "frontend_user_001",
     },
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
   });
 
   if (!response.ok) {
@@ -104,24 +105,23 @@ export const generateMealPlan = async (params = {}) => {
   return response.json();
 };
 
-
 export const analyzeNutrition = async (ingredients) => {
   const url = `https://api.edamam.com/api/nutrition-details?app_id=${NUTRITION_APP_ID}&app_key=${NUTRITION_APP_KEY}`;
 
   const response = await fetch(url, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       title: "Custom Recipe",
-      ingr: ingredients
-    })
+      ingr: ingredients,
+    }),
   });
 
   if (!response.ok) {
     const errorText = await response.text();
-    console.error('API Error Response:', errorText);
+    console.error("API Error Response:", errorText);
     throw new Error(`Nutrition API error: ${response.status}`);
   }
 
@@ -142,12 +142,12 @@ export const analyzeNutrition = async (ingredients) => {
 
   // If we have cautions, log them but don't fail
   if (data.cautions && data.cautions.length > 0) {
-    console.warn('API returned cautions:', data.cautions);
+    console.warn("API returned cautions:", data.cautions);
   }
 
   // If we have data but also cautions, log them for debugging
   if (data.cautions && data.cautions.length > 0) {
-    console.warn('API returned cautions:', data.cautions);
+    console.warn("API returned cautions:", data.cautions);
   }
 
   return data;

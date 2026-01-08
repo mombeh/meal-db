@@ -65,27 +65,27 @@ export const generateMealPlan = async (params = {}) => {
     `?app_id=${MEAL_PLANNER_APP_ID}&app_key=${MEAL_PLANNER_APP_KEY}`;
 
   const body = {
-    size: params.size || 7,
-    plan: {
-      accept: {
-        all: [
-          ...(params.health?.length ? [{ health: params.health }] : []),
-          ...(params.diet ? [{ diet: [params.diet] }] : []),
-        ],
-      },
-      fit: {
-        ENERC_KCAL: {
-          min: params.minCalories ?? 0,
-          max: params.maxCalories ?? 3000,
-        },
-      },
-      sections: {
-        Breakfast: {},
-        Lunch: {},
-        Dinner: {},
+  size: params.size || 7,
+  plan: {
+    accept: {
+      all: [
+        ...(params.health?.length ? [{ health: params.health }] : []),
+        ...(params.diet ? [{ diet: [params.diet] }] : []),
+      ],
+    },
+    fit: {
+      ENERC_KCAL: {
+        min: params.minCalories ?? 0,
+        max: params.maxCalories ?? 3000,
       },
     },
-  };
+    sections: {
+      Breakfast: { dishType: ["Breakfast"] },
+      Lunch: { dishType: ["Lunch"] },
+      Dinner: { dishType: ["Dinner"] },
+    },
+  },
+};
 
   const response = await fetch(url, {
     method: "POST",

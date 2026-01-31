@@ -17,7 +17,7 @@ export const loadInitialData = createAsyncThunk(
 export const loadRecipes = createAsyncThunk(
   'recipes/loadRecipes',
   async (_, { getState }) => {
-    const recipes = await fetchRandomMeals(10); // Reduce to 10 for speed
+    const recipes = await fetchRandomMeals(20); // Reduce to 10 for speed
     return recipes;
   }
 );
@@ -25,7 +25,8 @@ export const loadRecipes = createAsyncThunk(
 const recipesSlice = createSlice({
   name: 'recipes',
   initialState: {
-    recipes: [],
+    apiRecipes: [],
+    userRecipes: [],
     searchTerm: '',
     categories: [],
     areas: [],
@@ -39,20 +40,20 @@ const recipesSlice = createSlice({
     },
     addRecipe: (state, action) => {
       const newRecipe = { ...action.payload, id: Date.now().toString(), favorite: false };
-      state.recipes.push(newRecipe);
+      state.userRecipes.push(newRecipe);
     },
     updateRecipe: (state, action) => {
       const { id, updatedRecipe } = action.payload;
-      const index = state.recipes.findIndex(recipe => recipe.id === id);
+      const index = state.userRecipes.findIndex(recipe => recipe.id === id);
       if (index !== -1) {
-        state.recipes[index] = { ...state.recipes[index], ...updatedRecipe };
+        state.userRecipes[index] = { ...state.userRecipes[index], ...updatedRecipe };
       }
     },
     deleteRecipe: (state, action) => {
-      state.recipes = state.recipes.filter(recipe => recipe.id !== action.payload);
+      state.userRecipes = state.userRecipes.filter(recipe => recipe.id !== action.payload);
     },
     toggleFavorite: (state, action) => {
-      const recipe = state.recipes.find(recipe => recipe.id === action.payload);
+      const recipe = [...state.apiRecipes, ...state.userRecipes].find(recipe => recipe.id === action.payload);
       if (recipe) {
         recipe.favorite = !recipe.favorite;
       }
@@ -78,10 +79,7 @@ const recipesSlice = createSlice({
       })
       .addCase(loadRecipes.fulfilled, (state, action) => {
         state.loading = false;
-        // Only add if not already present
-        const existingIds = new Set(state.recipes.map(r => r.id));
-        const newRecipes = action.payload.filter(recipe => !existingIds.has(recipe.id));
-        state.recipes.push(...newRecipes);
+        state.apiRecipes = action.payload;
       })
       .addCase(loadRecipes.rejected, (state, action) => {
         state.loading = false;
@@ -93,7 +91,7 @@ const recipesSlice = createSlice({
 export const { setSearchTerm, addRecipe, updateRecipe, deleteRecipe, toggleFavorite } = recipesSlice.actions;
 
 export const selectFilteredRecipes = (state) =>
-  state.recipes.recipes.filter(recipe =>
+  [...state.recipes.apiRecipes, ...state.recipes.userRecipes].filter(recipe =>
     recipe.name.toLowerCase().includes(state.recipes.searchTerm.toLowerCase())
   );
 

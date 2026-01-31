@@ -115,15 +115,15 @@ const normalizeIngredients = (ingredients) => {
         <img
           src={recipe.image}
           alt={recipe.name}
-          className="w-full h-72 object-cover rounded-t-2xl"
+          className="w-full h-48 sm:h-72 object-cover rounded-t-2xl"
         />
 
         {/* Scrollable content */}
-        <div className="flex-1 overflow-y-auto no-scrollbar p-8 pb-36">
+        <div className="flex-1 overflow-y-auto no-scrollbar p-4 sm:p-8 pb-36">
           {/* Title + Favorite */}
-          <div className="flex items-start justify-between mb-10">
+          <div className="flex items-start justify-between mb-6 sm:mb-10">
             <div>
-              <h2 className="text-3xl font-bold text-gray-800 mb-2">
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
                 {recipe.name}
               </h2>
               <p className="text-sm text-gray-500">

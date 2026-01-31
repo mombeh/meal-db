@@ -40,8 +40,8 @@ const MealPlanner = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-4">Meal Planner</h2>
+    <div className="max-w-4xl mx-auto p-4 sm:p-6 bg-white rounded-lg shadow-md">
+      <h2 className="text-xl sm:text-2xl font-bold mb-4">Meal Planner</h2>
 
       <div className="mb-4">
         <label className="block text-sm font-medium mb-2">Diet</label>
@@ -81,7 +81,7 @@ const MealPlanner = () => {
         </div>
       </div>
 
-      <div className="mb-4 flex gap-4">
+      <div className="mb-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div>
           <label className="block text-sm font-medium mb-2">Min Calories</label>
           <input
@@ -89,7 +89,7 @@ const MealPlanner = () => {
             name="minCalories"
             value={params.minCalories}
             onChange={handleInputChange}
-            className="p-2 border rounded"
+            className="w-full p-2 border rounded"
           />
         </div>
         <div>
@@ -99,7 +99,7 @@ const MealPlanner = () => {
             name="maxCalories"
             value={params.maxCalories}
             onChange={handleInputChange}
-            className="p-2 border rounded"
+            className="w-full p-2 border rounded"
           />
         </div>
         <div>
@@ -111,12 +111,12 @@ const MealPlanner = () => {
             name="size"
             value={params.size}
             onChange={handleInputChange}
-            className="p-2 border rounded"
+            className="w-full p-2 border rounded"
           />
         </div>
       </div>
 
-      <div className="mb-4">
+      <div className="mb-4 flex flex-col sm:flex-row gap-2">
         <button
           onClick={handleGenerate}
           disabled={loading}
@@ -127,7 +127,7 @@ const MealPlanner = () => {
         {currentPlan && (
           <button
             onClick={handleClear}
-            className="ml-2 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+            className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
           >
             Clear Plan
           </button>

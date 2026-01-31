@@ -15,8 +15,8 @@ function Header() {
         `,
       }}
     >
-      <div className="relative z-10 flex items-center justify-between px-10 py-6">
-        <h1 className="text-white text-2xl font-bold">
+      <div className="relative z-10 flex items-center justify-between px-4 sm:px-10 py-6">
+        <h1 className="text-white text-xl sm:text-2xl font-bold">
           Nadine’s Kitchen
         </h1>
 
@@ -26,12 +26,12 @@ function Header() {
         </nav>
       </div>
 
-      <div className="relative z-10 flex items-center justify-center h-full">
+      <div className="relative z-10 flex items-center justify-center h-full px-4">
         <div className="text-center max-w-2xl">
-          <h1 className="text-5xl font-bold text-white">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white">
             Discover Delicious Recipes
           </h1>
-          <p className="mt-4 text-xl text-gray-200">
+          <p className="mt-4 text-lg sm:text-xl text-gray-200">
             Simple, tasty meals made easy.
           </p>
         </div>

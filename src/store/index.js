@@ -7,7 +7,7 @@ import mealPlanReducer from './mealPlanSlice';
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['recipes'], // Only persist recipes
+  whitelist: ['userRecipes'], // Only persist user recipes
 };
 
 const persistedReducer = persistReducer(persistConfig, recipesReducer);

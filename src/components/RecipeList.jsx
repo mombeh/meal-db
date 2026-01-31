@@ -12,7 +12,7 @@ import RecipeForm from "./RecipeForm";
 
 const RecipeList = () => {
   const dispatch = useDispatch();
-  const allRecipes = useSelector((state) => state.recipes.recipes);
+  const allRecipes = useSelector((state) => [...state.recipes.apiRecipes, ...state.recipes.userRecipes]);
   const searchTerm = useSelector((state) => state.recipes.searchTerm);
   const recipesState = useSelector((state) => state.recipes);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
@@ -34,14 +34,16 @@ const RecipeList = () => {
     showFavorites ? recipe.favorite : true
   );
 
+  const isLoading = recipesState.loading && recipesState.apiRecipes.length === 0;
+
   useEffect(() => {
     if (recipesState.categories.length === 0) {
       dispatch(loadInitialData());
     }
-    if (allRecipes.length === 0) {
+    if (recipesState.apiRecipes.length === 0) {
       dispatch(loadRecipes());
     }
-  }, [dispatch, recipesState.categories.length, allRecipes.length]);
+  }, [dispatch, recipesState.categories.length, recipesState.apiRecipes.length]);
 
   const handleCardClick = (recipe) => {
     setSelectedRecipe(recipe);
@@ -115,7 +117,12 @@ const RecipeList = () => {
       {/* Recipe Grid / Empty State */}
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          {recipes.length === 0 ? (
+          {isLoading ? (
+            <div className="text-center py-20">
+              <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500 mb-4"></div>
+              <p className="text-gray-500 text-lg">Loading delicious recipes...</p>
+            </div>
+          ) : recipes.length === 0 ? (
             <p className="text-center text-gray-500 text-lg py-20">
               {showFavorites
                 ? "You have no favorite recipes yet."
